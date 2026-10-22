@@ -1,3 +1,230 @@
-body { font-family: sans-serif; background-color: #f4f4f4; color: #333; padding: 20px; }
-.comando { background: white; padding: 15px; margin-bottom: 10px; border-left: 5px solid #2ecc71; border-radius: 4px; }
-h1 { color: #2c3e50; }
+:root {
+    --fondo: #12152b;
+    --tarjeta: #1b2040;
+    --linea: #343b6b;
+    --texto: #c9cfe8;
+    --titulo: #f1f3ff;
+    --rama-1: #ff7a6b; /* coral */
+    --rama-2: #ffc857; /* ámbar */
+    --rama-3: #4fd1c5; /* turquesa */
+    --rama-4: #a78bfa; /* violeta */
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0 20px 80px;
+    font-family: "Instrument Sans", system-ui, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--texto);
+    background-color: var(--fondo);
+    background-image:
+        radial-gradient(circle at 12% 8%, rgba(255, 122, 107, 0.28), transparent 38%),
+        radial-gradient(circle at 90% 30%, rgba(79, 209, 197, 0.2), transparent 40%),
+        radial-gradient(circle at 20% 85%, rgba(167, 139, 250, 0.24), transparent 40%),
+        radial-gradient(var(--linea) 1px, transparent 1px);
+    background-size: auto, auto, auto, 28px 28px;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+
+/* ---------- Fondo decorativo ---------- */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    inset: -520px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+body::before {
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='520' fill='none' stroke-width='5' stroke-linecap='round'><path d='M70 0V520' stroke='%23ff7a6b'/><path d='M70 110C70 170 170 150 170 220V330C170 390 70 370 70 430' stroke='%23ffc857'/><path d='M390 0V200C390 260 300 240 300 300V520' stroke='%234fd1c5'/><path d='M390 200C390 260 470 250 470 320V520' stroke='%23a78bfa'/><g stroke='none'><circle cx='70' cy='60' r='13' fill='%23ff7a6b'/><circle cx='70' cy='110' r='13' fill='%23ff7a6b'/><circle cx='170' cy='275' r='13' fill='%23ffc857'/><circle cx='70' cy='430' r='13' fill='%23ff7a6b'/><circle cx='390' cy='80' r='13' fill='%234fd1c5'/><circle cx='390' cy='200' r='13' fill='%234fd1c5'/><circle cx='300' cy='380' r='13' fill='%234fd1c5'/><circle cx='470' cy='400' r='13' fill='%23a78bfa'/></g></svg>") 0 0 / 520px 520px;
+    opacity: 0.22;
+    animation: deriva 60s linear infinite;
+}
+
+body::after {
+    background: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420' font-family='monospace' font-weight='700'><text x='30' y='70' font-size='46' fill='%23ffc857'>{ }</text><text x='250' y='50' font-size='30' fill='%234fd1c5' transform='rotate(-8 250 50)'>&lt;/&gt;</text><text x='300' y='190' font-size='54' fill='%23ff7a6b'>+</text><text x='60' y='210' font-size='54' fill='%23a78bfa'>−</text><text x='150' y='140' font-size='20' fill='%234fd1c5'>a1b2c3d</text><text x='200' y='300' font-size='26' fill='%23ffc857' transform='rotate(6 200 300)'>HEAD</text><text x='40' y='340' font-size='48' fill='%23ff7a6b'>⎇</text><text x='320' y='380' font-size='30' fill='%23a78bfa'>$_</text><text x='140' y='400' font-size='20' fill='%23a78bfa'>merge</text></svg>") 0 0 / 420px 420px;
+    opacity: 0.2;
+    animation: deriva 90s linear infinite reverse;
+}
+
+@keyframes deriva {
+    to { transform: translate(520px, 520px); }
+}
+
+/* ---------- Encabezado ---------- */
+header {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 72px 0 48px;
+}
+
+h1 {
+    margin: 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--titulo);
+}
+
+h1::before {
+    content: "$ ";
+    color: var(--rama-3);
+}
+
+h1::after {
+    content: "";
+    display: inline-block;
+    width: 0.55em;
+    height: 0.9em;
+    margin-left: 0.15em;
+    vertical-align: -0.1em;
+    background: var(--rama-1);
+    animation: cursor 1.1s steps(1) infinite;
+}
+
+header p {
+    margin: 18px 0 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.95rem;
+    color: var(--rama-2);
+}
+
+header p::before {
+    content: "⎇ ";
+}
+
+/* ---------- Historial de commits ---------- */
+main {
+    position: relative;
+    max-width: 720px;
+    margin: 0 auto;
+    padding-left: 56px;
+}
+
+/* la línea de la rama principal */
+main::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--linea);
+}
+
+.comando {
+    --c: var(--rama-1);
+    position: relative;
+    margin: 0 0 22px;
+    padding: 18px 22px 20px;
+    background: var(--tarjeta);
+    border-left: 4px solid var(--c);
+    border-radius: 4px 10px 10px 4px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comando:nth-child(4n + 2) { --c: var(--rama-2); }
+.comando:nth-child(4n + 3) { --c: var(--rama-3); }
+.comando:nth-child(4n + 4) { --c: var(--rama-4); }
+
+/* el nodo del commit sobre la línea */
+.comando::before {
+    content: "";
+    position: absolute;
+    left: -49px;
+    top: 24px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 0 5px var(--fondo);
+}
+
+/* conector entre el nodo y la tarjeta */
+.comando::after {
+    content: "";
+    position: absolute;
+    left: -31px;
+    top: 32px;
+    width: 27px;
+    height: 3px;
+    background: var(--c);
+}
+
+.comando:hover {
+    transform: translateX(6px);
+    box-shadow: -6px 0 24px -8px var(--c);
+}
+
+/* ---------- Cursor de commit sobre las tarjetas ---------- */
+.comando { cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 0V32' stroke='%23ff7a6b' stroke-width='3' opacity='.55'/><circle cx='16' cy='16' r='10' fill='%2312152b' stroke='%23ff7a6b' stroke-width='4'/><circle cx='16' cy='16' r='4' fill='%23ff7a6b'/></svg>") 16 16, pointer; }
+.comando:nth-child(4n + 2) { cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 0V32' stroke='%23ffc857' stroke-width='3' opacity='.55'/><circle cx='16' cy='16' r='10' fill='%2312152b' stroke='%23ffc857' stroke-width='4'/><circle cx='16' cy='16' r='4' fill='%23ffc857'/></svg>") 16 16, pointer; }
+.comando:nth-child(4n + 3) { cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 0V32' stroke='%234fd1c5' stroke-width='3' opacity='.55'/><circle cx='16' cy='16' r='10' fill='%2312152b' stroke='%234fd1c5' stroke-width='4'/><circle cx='16' cy='16' r='4' fill='%234fd1c5'/></svg>") 16 16, pointer; }
+.comando:nth-child(4n + 4) { cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M16 0V32' stroke='%23a78bfa' stroke-width='3' opacity='.55'/><circle cx='16' cy='16' r='10' fill='%2312152b' stroke='%23a78bfa' stroke-width='4'/><circle cx='16' cy='16' r='4' fill='%23a78bfa'/></svg>") 16 16, pointer; }
+
+.comando h2 {
+    display: inline-block;
+    margin: 0 0 8px;
+    padding: 3px 12px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--c);
+    background: var(--fondo);
+    border-radius: 6px;
+}
+
+.comando h2::before {
+    content: "$ ";
+    opacity: 0.55;
+}
+
+.comando p {
+    margin: 0;
+    max-width: 60ch;
+}
+
+/* invitación para los estudiantes: el siguiente commit */
+main::after {
+    content: "siguiente commit: agrega tu comando";
+    display: block;
+    position: relative;
+    margin-top: 8px;
+    padding: 14px 22px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.9rem;
+    color: var(--linea);
+    border: 2px dashed var(--linea);
+    border-radius: 10px;
+}
+
+/* ---------- Accesibilidad y móvil ---------- */
+@keyframes cursor {
+    50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    h1::after { animation: none; }
+    body::before, body::after { animation: none; }
+    .comando { transition: none; }
+    .comando:hover { transform: none; }
+}
+
+@media (max-width: 520px) {
+    body { padding: 0 14px 60px; }
+    header { padding-top: 48px; }
+    main { padding-left: 40px; }
+    main::before { left: 8px; }
+    .comando { padding: 16px 16px 18px; }
+    .comando::before { left: -39px; width: 16px; height: 16px; }
+    .comando::after { left: -23px; width: 19px; }
+}
